@@ -1,8 +1,6 @@
 package com.extendedclip.deluxemenus.menu;
 
 import com.extendedclip.deluxemenus.DeluxeMenus;
-import com.extendedclip.deluxemenus.action.ClickHandler;
-import com.extendedclip.deluxemenus.dupe.MenuItemMarker;
 import com.extendedclip.deluxemenus.events.DeluxeMenusOpenMenuEvent;
 import com.extendedclip.deluxemenus.events.DeluxeMenusPreOpenMenuEvent;
 import com.extendedclip.deluxemenus.menu.command.RegistrableMenuCommand;
@@ -294,7 +292,7 @@ public class Menu {
             return;
         }
 
-        Bukkit.getAsyncScheduler().runNow(plugin, (async) -> {
+        Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
 
             Set<MenuItem> activeItems = new HashSet<>();
 
@@ -384,7 +382,7 @@ public class Menu {
             final boolean updatePlaceholders = update;
 
             viewer.getScheduler().run(plugin, (ptask) -> {
-                if(options.refresh()) {
+                if (options.refresh()) {
                     holder.startRefreshTask();
                 }
 

@@ -23,7 +23,6 @@ public abstract class FoliaRunnable implements Runnable {
     private int chunkX;
     private int chunkZ;
 
-
     public FoliaRunnable(@NotNull AsyncScheduler scheduler, @Nullable TimeUnit timeUnit) {
         this.asyncScheduler = scheduler;
         this.timeUnit = timeUnit;
@@ -74,7 +73,7 @@ public abstract class FoliaRunnable implements Runnable {
             } else {
                 throw new UnsupportedOperationException("The region type is not supported.");
             }
-        } else if (this.asyncScheduler != null){
+        } else if (this.asyncScheduler != null) {
             return setupTask(this.asyncScheduler.runNow(plugin, scheduledTask -> this.run()));
         } else {
             throw new UnsupportedOperationException("The task type is not supported.");
@@ -85,10 +84,10 @@ public abstract class FoliaRunnable implements Runnable {
      * Schedules this to run after the specified number of server ticks.
      *
      * @param plugin the reference to the plugin scheduling task
-     * @param delay the ticks to wait before running the task
+     * @param delay  the ticks to wait before running the task
      * @return a ScheduledTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
-     * @throws IllegalStateException if this was already scheduled
+     * @throws IllegalStateException    if this was already scheduled
      */
     @NotNull
     public ScheduledTask runDelayed(@NotNull Plugin plugin, long delay) throws IllegalArgumentException, IllegalStateException {

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public final class Constants {
+
     private Constants() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

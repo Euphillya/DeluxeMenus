@@ -8,7 +8,6 @@ import com.extendedclip.deluxemenus.menu.MenuItem;
 import com.extendedclip.deluxemenus.requirement.RequirementList;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -67,11 +66,9 @@ public class PlayerListener extends Listener {
 
     @EventHandler
     public void onOpen(InventoryOpenEvent event) {
-        if (!(event.getPlayer() instanceof Player)) {
+        if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) event.getPlayer();
 
         if (player.isSleeping()) {
             event.setCancelled(true);
@@ -85,11 +82,9 @@ public class PlayerListener extends Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
 
-        if (!(event.getPlayer() instanceof Player)) {
+        if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) event.getPlayer();
 
         if (Menu.isInMenu(player)) {
             Menu.closeMenu(plugin, player, false);
@@ -103,11 +98,9 @@ public class PlayerListener extends Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onClick(InventoryClickEvent event) {
 
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-
-        final Player player = (Player) event.getWhoClicked();
 
         final Optional<MenuHolder> optionalHolder = Menu.getMenuHolder(player);
 
@@ -186,15 +179,6 @@ public class PlayerListener extends Listener {
         }
     }
 
-    /**
-     * Handles menu click by player
-     *
-     * @param player       player who clicked
-     * @param holder       menu holder
-     * @param handler      click handler
-     * @param requirements click requirements
-     * @return true if click was handled successfully. will ever return false if no click handler was found
-     */
     private boolean handleClick(final @NotNull Player player, final @NotNull MenuHolder holder, final @NotNull Optional<ClickHandler> handler, final @NotNull Optional<RequirementList> requirements) {
         if (handler.isEmpty()) {
             return false;

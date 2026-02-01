@@ -15,7 +15,6 @@ version = "$majorVersion-$minorVersion"
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.glaremasters.me/repository/public/")
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
@@ -23,6 +22,18 @@ repositories {
     maven("https://repo.nexomc.com/releases/")
     maven("https://repo.oraxen.com/releases")
     maven("https://jitpack.io")
+
+    // Sonatype snapshots are often flaky; only use them for the groups that truly live there.
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        mavenContent {
+            snapshotsOnly()
+        }
+        content {
+            // Keep this list minimal and only for real snapshot-hosted groups you actually need.
+            includeGroup("io.lumine")
+            includeGroup("net.Indyuce")
+        }
+    }
 }
 
 dependencies {

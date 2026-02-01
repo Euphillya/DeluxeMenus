@@ -4,6 +4,7 @@ import com.extendedclip.deluxemenus.DeluxeMenus;
 import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,17 +23,19 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.logging.Level;
+
 import org.jetbrains.annotations.NotNull;
 
 public final class DumpUtils {
+
     @NotNull
     public static final String URL = "https://paste.helpch.at/";
     @NotNull
     private static final Gson gson = new Gson();
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter
-        .ofLocalizedDateTime(FormatStyle.LONG)
-        .withLocale(Locale.getDefault())
-        .withZone(ZoneId.of("UTC"));
+            .ofLocalizedDateTime(FormatStyle.LONG)
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.of("UTC"));
 
     private DumpUtils() {
         throw new AssertionError("Util classes should not be initialized");
@@ -43,7 +46,7 @@ public final class DumpUtils {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 final HttpURLConnection connection = ((HttpURLConnection) new URL(URL + "documents")
-                    .openConnection());
+                        .openConnection());
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
                 connection.setDoOutput(true);
@@ -66,30 +69,30 @@ public final class DumpUtils {
 
     @NotNull
     public static String createDump(
-        @NotNull final DeluxeMenus plugin,
-        @NotNull final String name
+            @NotNull final DeluxeMenus plugin,
+            @NotNull final String name
     ) throws RuntimeException {
         final var builder = new StringBuilder();
 
         builder.append("Generated On: ")
-            .append(DATE_FORMAT.format(Instant.now()))
-            .append(System.lineSeparator())
-            .append(System.lineSeparator());
+                .append(DATE_FORMAT.format(Instant.now()))
+                .append(System.lineSeparator())
+                .append(System.lineSeparator());
 
         builder.append("DeluxeMenus Version: ")
-            .append(plugin.getDescription().getVersion())
-            .append(System.lineSeparator());
+                .append(plugin.getDescription().getVersion())
+                .append(System.lineSeparator());
 
         builder.append("Java Version: ")
-            .append(System.getProperty("java.version"))
-            .append(System.lineSeparator());
+                .append(System.getProperty("java.version"))
+                .append(System.lineSeparator());
 
         builder.append("Server Info:")
-            .append(plugin.getServer().getBukkitVersion())
-            .append('/')
-            .append(plugin.getServer().getVersion())
-            .append(System.lineSeparator())
-            .append(System.lineSeparator());
+                .append(plugin.getServer().getBukkitVersion())
+                .append('/')
+                .append(plugin.getServer().getVersion())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator());
 
         if (name.equalsIgnoreCase("config")) {
             if (createConfigDump(plugin, builder)) {
@@ -107,22 +110,22 @@ public final class DumpUtils {
     }
 
     private static boolean createMenuDump(
-        @NotNull final DeluxeMenus plugin,
-        @NotNull final String menuName,
-        @NotNull final StringBuilder builder
+            @NotNull final DeluxeMenus plugin,
+            @NotNull final String menuName,
+            @NotNull final StringBuilder builder
     ) {
         builder.append("Menu Name: ")
-            .append(menuName)
-            .append(System.lineSeparator());
+                .append(menuName)
+                .append(System.lineSeparator());
 
         final var config = plugin.getConfig();
         final var guiMenus = config.getConfigurationSection("gui_menus");
 
         if (guiMenus == null) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "No gui_menus section found in config.yml!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "No gui_menus section found in config.yml!"
             );
 
             return false;
@@ -132,9 +135,9 @@ public final class DumpUtils {
 
         if (!keys.contains(menuName)) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "File for the " + menuName + " menu is not declared in config.yml!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "File for the " + menuName + " menu is not declared in config.yml!"
             );
 
             return false;
@@ -144,9 +147,9 @@ public final class DumpUtils {
 
         if (fileName == null) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "File for the " + menuName + " menu is not declared in config.yml!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "File for the " + menuName + " menu is not declared in config.yml!"
             );
 
             return false;
@@ -154,30 +157,30 @@ public final class DumpUtils {
 
         if (!fileName.endsWith(".yml")) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "File for the " + menuName + " menu is not declared in config.yml!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "File for the " + menuName + " menu is not declared in config.yml!"
             );
 
             return false;
         }
 
         builder.append("Menu Path: ")
-            .append(fileName)
-            .append(System.lineSeparator())
-            .append(System.lineSeparator())
-            .append("---------------------------------------------")
-            .append(System.lineSeparator())
-            .append(System.lineSeparator());
+                .append(fileName)
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("---------------------------------------------")
+                .append(System.lineSeparator())
+                .append(System.lineSeparator());
 
         final var menuFile = new File(plugin.getConfiguration().getMenuDirector(), fileName);
 
         if (!menuFile.exists() || !menuFile.isFile()) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "Could not find the " + fileName + " file in " +
-                    plugin.getConfiguration().getMenuDirector().getPath() + " while creating the dump!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "Could not find the " + fileName + " file in " +
+                            plugin.getConfiguration().getMenuDirector().getPath() + " while creating the dump!"
             );
 
             return false;
@@ -185,18 +188,18 @@ public final class DumpUtils {
 
         try {
             Files.readAllLines(menuFile.toPath(), StandardCharsets.UTF_8).forEach(line ->
-                builder.append(line).append(System.lineSeparator())
+                    builder.append(line).append(System.lineSeparator())
             );
         } catch (final IOException exception) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "Something went wrong while reading the the file: " + fileName
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "Something went wrong while reading the the file: " + fileName
             );
 
             plugin.printStacktrace(
-                "Something went wrong while reading the the file: " + fileName,
-                exception
+                    "Something went wrong while reading the the file: " + fileName,
+                    exception
             );
             return false;
         }
@@ -205,40 +208,40 @@ public final class DumpUtils {
     }
 
     private static boolean createConfigDump(
-        @NotNull final DeluxeMenus plugin,
-        @NotNull final StringBuilder builder
+            @NotNull final DeluxeMenus plugin,
+            @NotNull final StringBuilder builder
     ) {
         final File configFile = new File(plugin.getDataFolder(), "config.yml");
 
         if (!configFile.exists() || !configFile.isFile()) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "Could not find the " + configFile + " file in " + plugin.getDataFolder().getPath()
-                    + " while creating the dump!"
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "Could not find the " + configFile + " file in " + plugin.getDataFolder().getPath()
+                            + " while creating the dump!"
             );
 
             return false;
         }
 
         builder.append("---------------------------------------------")
-            .append(System.lineSeparator())
-            .append(System.lineSeparator());
+                .append(System.lineSeparator())
+                .append(System.lineSeparator());
 
         try {
             Files.readAllLines(configFile.toPath(), StandardCharsets.UTF_8).forEach(line ->
-                builder.append(line).append(System.lineSeparator())
+                    builder.append(line).append(System.lineSeparator())
             );
         } catch (final IOException exception) {
             plugin.debug(
-                DebugLevel.HIGHEST,
-                Level.WARNING,
-                "Something went wrong while reading the the file: " + configFile
+                    DebugLevel.HIGHEST,
+                    Level.WARNING,
+                    "Something went wrong while reading the the file: " + configFile
             );
 
             plugin.printStacktrace(
-                "Something went wrong while reading the the file: " + configFile,
-                exception
+                    "Something went wrong while reading the the file: " + configFile,
+                    exception
             );
             return false;
         }

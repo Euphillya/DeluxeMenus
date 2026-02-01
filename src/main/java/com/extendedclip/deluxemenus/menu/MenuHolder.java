@@ -3,23 +3,21 @@ package com.extendedclip.deluxemenus.menu;
 import com.extendedclip.deluxemenus.DeluxeMenus;
 import com.extendedclip.deluxemenus.menu.options.MenuOptions;
 import com.extendedclip.deluxemenus.utils.StringUtils;
+import com.extendedclip.deluxemenus.utils.schedulers.FoliaRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 public class MenuHolder implements InventoryHolder {
 
@@ -138,7 +136,7 @@ public class MenuHolder implements InventoryHolder {
 
         setUpdating(true);
 
-        Bukkit.getAsyncScheduler().runNow(this.plugin, (task) -> {
+        Bukkit.getGlobalRegionScheduler().run(this.plugin, (task) -> {
 
             final Set<MenuItem> active = new HashSet<>();
 
@@ -235,7 +233,7 @@ public class MenuHolder implements InventoryHolder {
             stopRefreshTask();
         }
 
-        refreshTask = new com.extendedclip.deluxemenus.utils.schedulers.FoliaRunnable(Bukkit.getAsyncScheduler(), java.util.concurrent.TimeUnit.MILLISECONDS) {
+        refreshTask = new FoliaRunnable(Bukkit.getAsyncScheduler(), TimeUnit.MILLISECONDS) {
             @Override
             public void run() {
                 refreshMenu();
@@ -253,7 +251,7 @@ public class MenuHolder implements InventoryHolder {
             stopPlaceholderUpdate();
         }
 
-        updateTask = new com.extendedclip.deluxemenus.utils.schedulers.FoliaRunnable(Bukkit.getAsyncScheduler(), java.util.concurrent.TimeUnit.MILLISECONDS) {
+        updateTask = new FoliaRunnable(Bukkit.getAsyncScheduler(), TimeUnit.MILLISECONDS) {
 
             @Override
             public void run() {
